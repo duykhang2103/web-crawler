@@ -1,0 +1,143 @@
+:root {
+  --primary: #ddd;
+  --dark: #333;
+  --light: #fff;
+  --primary-color: #047aed;
+  --secondary-color: #1c3fa8;
+  --darkgrey-color: #385462;
+  --dark-color: #152733;
+  --shadow: 0 1px 5px rgba(104, 104, 104, 0.8);
+}
+html {
+  box-sizing: border-box;
+  font-family: Arial, Helvetica, sans-serif;
+}
+body {
+  margin: 30px 50px;
+  line-height: 1.4;
+}
+.wrapper {
+  display: grid;
+  grid-gap: 20px;
+}
+
+.dataTables_wrapper .dataTables_filter {
+  float: left;
+}
+
+
+.dataTables_filter {
+  display: flex;
+  position: relative;
+  background: var(--light);
+  flex-direction: row;
+  float: left;
+  width: 1000px;;
+}
+.category-div {
+  display: block;
+  position: relative;
+  width: 40px;
+  background-color: #047aed;
+}
+
+.category-div:hover .category-box{
+  display: flex;
+  position: absolute;
+  flex-direction: row;
+  flex-wrap: wrap;
+  background-color: #047aed;
+  top: 30px;
+  width: 330px;
+  justify-content: space-between;
+}
+
+.category-div .category-box {
+  display: none;
+}
+
+.category-div .category-box .category-option{
+  display: block;
+  position: relative;
+  padding: 5px;
+  background-color: #1c3fa8;
+  margin: 5px;
+  width: 100px;
+}
+
+.dataTables_filter input {
+  width: 100%;
+  /* height: 100%; */
+  background: var(--primary);
+  border: 1px solid #aaa;
+  border-radius: 5px;
+  box-shadow: 0 0 3px #ccc, 0 10px 15px #ebebeb inset;
+  text-indent: 10px;
+}
+
+.dataTables_filter .fa-search {
+  position: absolute;
+  top: 8px;
+  right: auto;
+  left: 150px;
+}
+
+.dataTables_filter #search-box {
+  display: block;
+  position: relative;
+  /* width: 200px; */
+}
+
+header {
+  margin-left: 30px;
+  color: var(--light)
+}
+
+main {
+  display: grid;
+  margin: auto 30px;
+  min-height: 400px;
+  background: var(--primary);
+  background-size: cover;
+  background-position: center;
+  padding: 3rem;
+  
+  box-shadow: var(--shadow);
+}
+  td.details-control {
+    text-align:center;
+    color:forestgreen;
+    cursor: pointer;
+}
+tr.shown td.details-control {
+    text-align:center; 
+    color:red;
+}
+
+
+table.dataTable.nowrap th, table.dataTable.nowrap td {
+  white-space: normal;
+  text-align: center;
+}
+
+table.dataTable.nowrap tr.odd td, table.dataTable.nowrap tr.even td {
+  height: 240px;
+}
+
+table.dataTable.nowrap td img {
+  max-width: 100%;
+  max-height: 100%;
+}
+
+table.extra-infor tbody tr td {
+  text-align: left !important;
+  vertical-align: initial;
+}
+
+.disappear {
+  display: none;
+}
+
+.appear {
+  display: flex !important;
+}

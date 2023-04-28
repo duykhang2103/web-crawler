@@ -1,0 +1,82 @@
+.filter-button {
+  display: block;
+  position: relative;
+  width: 50px;
+  height: 32px;
+  background-color: rgb(223, 223, 223);
+  padding: 5px;
+  border: 1px solid #aaa;
+  border-radius: 3px;
+  padding: 5px;
+  text-align: center;
+  cursor: pointer;
+}
+
+/* .filter-button::before {
+  content: "Lọc";
+} */
+
+.filter {
+  display: none;
+  position: absolute;
+  /* width: 2000px; */
+  height: 263px;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  align-items: flex-start;
+  left: 228px;
+  background-color: rgba(220,220,220,0.9);
+  z-index: 2;
+  border-radius: 4px;
+}
+
+.filter-section {
+  display: flex;  
+  position: relative;
+  flex-direction: row;
+  flex-wrap: wrap;
+  width: 240px;
+  height: inherit;
+  justify-content: space-between;
+  align-content: start;
+  /* left: 230px; */
+  padding-right: 60px;
+  /* background-color: rgba(256,256,256,0.9); */
+  float: left;
+  border-right: 2px #fff solid;
+}
+
+.filter-section .check-div {
+  display: flex;
+  position: relative;
+  width: 40%;
+  height: 32px;
+  padding: 5px;
+  justify-content: left;
+}
+
+.dataTables_filter input[type="checkbox"] {
+  margin-left: 5px;
+  box-shadow: none;
+}
+
+.filter-section label {
+  margin-left: 10px;
+}
+
+.filter .inputs {
+  display: block;
+  position: relative;
+}
+
+.filter .inputs tr {
+  width: 100%;  
+}
+.filter .inputs td {
+  cursor: pointer;
+}
+
+.filter input[type="text"] {
+  background-color: #fff;
+}
