@@ -4,6 +4,7 @@ from flask import Flask, render_template, request, flash, jsonify
 app = Flask(__name__, static_folder='static')
 app.secret_key = "webcrawler"
 
+from schedule import *
 
 @app.route('/data')
 def get_data():

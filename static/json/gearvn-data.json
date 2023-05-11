@@ -12381,21 +12381,6 @@
     },
     {
         "tag": "ram",
-        "img": "https://product.hstatic.net/1000026716/product/ggb_06f3a6b35c444eb3ba34cd0fe8665722_large.png",
-        "url": "https://gearvn.com/products/16gb-ddr4-2x8g-3333-aorus-rgb-memory-ram",
-        "brand": "DDR4",
-        "name": "(16GB DDR4 2x8G 3333) AORUS RGB Memory RAM",
-        "system": "",
-        "discount": "41",
-        "oriPrice": "3.390.000",
-        "curPrice": "1.990.000 ₫",
-        "curPrice1": 1990000,
-        "shopName": "gearvn",
-        "isSale": 1,
-        "shopName1": "GearVN"
-    },
-    {
-        "tag": "ram",
         "img": "https://product.hstatic.net/1000026716/product/vengeance-pro-rgb-white-3_bd3e4fde39c84f13929cc874f3503ef0_33e700e3a1d6478aa3e52b409b22dfa6_large.png",
         "url": "https://gearvn.com/products/16g-ddr4-2x8g-3200-corsair-vengeance-rgb-pro-cl16-18-18-38",
         "brand": "Corsair",

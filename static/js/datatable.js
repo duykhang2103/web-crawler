@@ -411,7 +411,7 @@ function format(d){
 
   let oriPriceDiv = (d.oriPrice == "") ? "" : d.oriPrice + "  (-" + d.discount + "%)";
   systemDiv = "";
-  if (d.system == "") {
+  if (!d.system || d.system == "") {
     systemDiv = "";
   }
   else {
