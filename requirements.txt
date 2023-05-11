@@ -2,4 +2,3 @@ flask
 selenium
 apscheduler
 requests
-json
