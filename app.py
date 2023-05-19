@@ -2,7 +2,7 @@ import json
 import requests
 from flask import Flask, render_template, request, flash, jsonify
 
-from schedule import *
+# from schedule import *
 
 app = Flask(__name__, static_folder='static')
 app.secret_key = "webcrawler"

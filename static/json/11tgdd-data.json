@@ -14,7 +14,18 @@
         "shopName": "thegioididong",
         "shopName1": "Thế giới di động",
         "rating": 0,
-        "numOfRating": 0
+        "numOfRating": 0,
+        "newSystem": [
+            "Chuẩn kết nối:  USB 2.0",
+            "Dung lượng:  1 TB",
+            "Loại ổ cứng:  HDD",
+            "Tốc độ ghi:  DVD+R : 8X, DVD-R : 8X, DVD+RW : 8X, DVD-RW : 8X, DVD-ROM : 8X, DVD+R(DL) : 8X, DVD-R(DL) : 8X, DVD-ROM(DL) : 8X, DVD-RAM : 5X, CD-R : 24X, CD-RW : 24X, CD-ROM : 24X, DVD Video Playback : 4X, VCD Playback : 10X, Audio CD Playback : 10X",
+            "Tốc độ đọc:  DVD+R : 8X, DVD-R : 8X, DVD+RW : 8X, DVD-RW : 6X, DVD+R(DL) : 6X, DVD-R (DL) : 6X, DVD-RAM : 5X, CD-R : 24X, CD-RW : 16X",
+            "Kích thước:  Hãng không công bố",
+            "Khối lượng:  Hãng không công bố",
+            "Thương hiệu của:  Đài Loan",
+            "Sản xuất tại:  Trung Quốc"
+        ]
     },
     {
         "tag": "harddisk",
@@ -30,8 +41,18 @@
         "isSale": 0,
         "shopName": "thegioididong",
         "shopName1": "Thế giới di động",
-        "rating": 4.7,
-        "numOfRating": 3
+        "rating": 4.8,
+        "numOfRating": 4,
+        "newSystem": [
+            "Chuẩn kết nối:  USB 3.0",
+            "Dung lượng:  2 TB",
+            "Loại ổ cứng:  HDD",
+            "Kích thước:  Dài 11.4 cm - Ngang 7.8 cm - Dày 1.1 cm",
+            "Trọng lượng:  148 gr",
+            "Thương hiệu của:  Mỹ",
+            "Sản xuất tại:  Thái Lan",
+            "Hãng:  Seagate. Xem thông tin hãng Xem thông tin hãng"
+        ]
     },
     {
         "tag": "harddisk",
@@ -48,7 +69,17 @@
         "shopName": "thegioididong",
         "shopName1": "Thế giới di động",
         "rating": 4.5,
-        "numOfRating": 25
+        "numOfRating": 26,
+        "newSystem": [
+            "Chuẩn kết nối:  USB 3.0",
+            "Dung lượng:  1 TB",
+            "Loại ổ cứng:  HDD",
+            "Kích thước:  Dài 11.4 cm - Ngang 7.8 cm - Dày 1.1 cm",
+            "Trọng lượng:  148 gr",
+            "Thương hiệu của:  Mỹ",
+            "Sản xuất tại:  Thái Lan",
+            "Hãng:  Seagate. Xem thông tin hãng Xem thông tin hãng"
+        ]
     },
     {
         "tag": "harddisk",
@@ -65,7 +96,19 @@
         "shopName": "thegioididong",
         "shopName1": "Thế giới di động",
         "rating": 4.7,
-        "numOfRating": 3
+        "numOfRating": 3,
+        "newSystem": [
+            "Chuẩn kết nối:  USB Type C 3.2",
+            "Dung lượng:  1 TB",
+            "Loại ổ cứng:  SSD",
+            "Tốc độ đọc:  1050 MB/s",
+            "Tốc độ ghi:  1000 MB/s",
+            "Kích thước:  Dài 10 cm - Ngang 5.5 cm - Dày 0.9 cm",
+            "Trọng lượng:  45.7 gr",
+            "Thương hiệu của:  Mỹ",
+            "Sản xuất tại:  Trung Quốc/ Malaysia",
+            "Hãng:  Western Digital. Xem thông tin hãng Xem thông tin hãng"
+        ]
     },
     {
         "tag": "harddisk",
@@ -82,7 +125,19 @@
         "shopName": "thegioididong",
         "shopName1": "Thế giới di động",
         "rating": 4.5,
-        "numOfRating": 10
+        "numOfRating": 10,
+        "newSystem": [
+            "Chuẩn kết nối:  USB Type C 3.2",
+            "Dung lượng:  500 GB",
+            "Loại ổ cứng:  SSD",
+            "Tốc độ đọc:  1050 MB/s",
+            "Tốc độ ghi:  1000 MB/s",
+            "Kích thước:  Dài 10 cm - Ngang 5.5 cm - Dày 0.9 cm",
+            "Trọng lượng:  45.7 gr",
+            "Thương hiệu của:  Mỹ",
+            "Sản xuất tại:  Trung Quốc/ Malaysia",
+            "Hãng:  Western Digital. Xem thông tin hãng Xem thông tin hãng"
+        ]
     },
     {
         "tag": "harddisk",

@@ -218,7 +218,16 @@ $(document).ready( function () {
       $(this).attr("placeholder", "Search...");
       $(this).before('<span class="fa fa-search"></span>');
       $(this).attr("id", "search-box");
+
+      $(this).on('input', function(){
+        if($(this).val() != ''){
+          $(".fa-search").hide();
+        }
+        else $(".fa-search").show();
+      })
     });
+
+
     
     addFilter();
     
@@ -384,10 +393,7 @@ $(document).ready( function () {
 
 function waitAndSelectElement() {
   return new Promise(function(resolve, reject) {
-    // Call the other function that needs to run first
-
     setTimeout(function() {
-      // Select the element by ID
       var minEl = $('#min');
       var maxEl = $('#max');
       var categoryEls = $('input[name="item-category"]');
@@ -396,14 +402,16 @@ function waitAndSelectElement() {
       var saleEl = $('input[name="item-sale"]');
 
       // Check if the element exists
-      if (minEl.length > 0 && maxEl.length > 0 && categoryEls.length > 0) {
-        // If the element exists, resolve the promise with the element
-        resolve([minEl, maxEl, categoryEls, brandEls, shopEls, saleEl]);
-      } else {
-        // If the element doesn't exist, reject the promise with an error message
-        reject("Element not found");
-      }
-    }, 1000);
+      var els = [minEl, maxEl, categoryEls, brandEls, shopEls, saleEl];
+      var checkReject = 0;
+      els.forEach((el, i) => {
+        if(el.length <= 0) {
+          reject(`${i} not found`);
+          checkReject = 1;
+        }
+      })
+      if(!checkReject) resolve(els);
+    }, 2000);
   });
 }
 
