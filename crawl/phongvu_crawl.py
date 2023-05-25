@@ -22,39 +22,39 @@ options.add_experimental_option('excludeSwitches', ['enable-logging'])
 urlList = [
     "https://phongvu.vn/c/laptop",
     "https://phongvu.vn/c/chuot",
-    # "https://phongvu.vn/c/ban-phim-van-phong",
-    # "https://phongvu.vn/c/tai-nghe",
-    # "https://phongvu.vn/c/loa",
-    # "https://phongvu.vn/c/microphone",
-    # "https://phongvu.vn/c/vga-card-man-hinh",
-    # "https://phongvu.vn/c/pin-laptop",
-    # "https://phongvu.vn/c/sac-laptop",
-    # "https://phongvu.vn/c/usb",
-    # "https://phongvu.vn/c/ram",
-    # "https://phongvu.vn/c/o-cung",
-    # "https://phongvu.vn/c/webcam"
+    "https://phongvu.vn/c/ban-phim-van-phong",
+    "https://phongvu.vn/c/tai-nghe",
+    "https://phongvu.vn/c/loa",
+    "https://phongvu.vn/c/microphone",
+    "https://phongvu.vn/c/vga-card-man-hinh",
+    "https://phongvu.vn/c/pin-laptop",
+    "https://phongvu.vn/c/sac-laptop",
+    "https://phongvu.vn/c/usb",
+    "https://phongvu.vn/c/ram",
+    "https://phongvu.vn/c/o-cung",
+    "https://phongvu.vn/c/webcam"
 ]
 
 tagNameList = [
     "laptop", 
     "mouse", 
-    # "keyboard", 
-    # "headphone", 
-    # "loudspeaker", 
-    # "mic", 
-    # "vga", 
-    # "battery", 
-    # "charger", 
-    # "usb", 
-    # "ram", 
-    # "harddisk", 
-    # "webcam"    
+    "keyboard", 
+    "headphone", 
+    "loudspeaker", 
+    "mic", 
+    "vga", 
+    "battery", 
+    "charger", 
+    "usb", 
+    "ram", 
+    "harddisk", 
+    "webcam"    
 ]
 
 mainUrl = "https://phongvu.vn"
 ##Lay link cua tung loai may tinh
 
-def crawl(url, tag, res):
+def crawlPhongVu(url, tag, res):
     
     driver_service = Service(executable_path="chromedriver.exe")
     driver = webdriver.Chrome(service=driver_service, options=options)
@@ -126,16 +126,16 @@ def crawl(url, tag, res):
     driver.close()
 
 
-def saveData(filename, data):
+def saveRawPhongVu(filename, data):
     with open(filename, 'w', encoding='utf8') as file:
         json.dump(data, file, ensure_ascii=False, indent = 4)
 
-def runProgram(urlList, tagNameList):
+def runProgramPhongVu(urlList, tagNameList):
     threads = []
     res = []
 
     for i in range(len(urlList)):
-        t = threading.Thread(target=crawl, args=(urlList[i], tagNameList[i], res))
+        t = threading.Thread(target=crawlPhongVu, args=(urlList[i], tagNameList[i], res))
         threads.append(t)
     
     for thread in threads:
@@ -146,4 +146,6 @@ def runProgram(urlList, tagNameList):
 
     return res
 
-# saveData("./static/json/1.json", runProgram(urlList, tagNameList))
+# saveRawPhongVu("./static/json/phongvu-data.json", runProgramPhongVu(urlList, tagNameList))
+
+#done

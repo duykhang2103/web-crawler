@@ -1,3 +1,5 @@
+let laptopCheck;
+
 function addFilter(){
   let filter = document.getElementById("datatable_filter");
   var filterButton = $('<div class="filter-button" onclick="toggleFilter()">Lọc</div>').appendTo(filter);
@@ -19,25 +21,33 @@ function addFilter(){
   $('<label style="width: 100%"><strong>Loại sản phẩm</strong></label>').appendTo(tagDiv);
       
 
-  var allItemDiv1 = $('<div class="check-div"></div>').appendTo(tagDiv);
-  $('<input type="checkbox" name="item-category" checked>')
-    .attr('id', 'all-item-category')
-    .attr('value', 'all')
-    .appendTo(allItemDiv1);
-  $('<label></label>')
-    .attr('for', 'all-item-category')
-    .text('Tất cả')
-    .appendTo(allItemDiv1);
+  // var allItemDiv1 = $('<div class="check-div"></div>').appendTo(tagDiv);
+  // $('<input type="checkbox" name="item-category" checked>')
+  //   .attr('id', 'all-item-category')
+  //   .attr('value', 'all')
+  //   .appendTo(allItemDiv1);
+  // $('<label></label>')
+  //   .attr('for', 'all-item-category')
+  //   .text('Tất cả')
+  //   .appendTo(allItemDiv1);
   
   for (var i = 0; i < tags.length; i++) {
     var tag = tags[i];
     var idTag = idTags[i];
     var checkDiv = $('<div class="check-div"></div>').appendTo(tagDiv);
     
+    // if (tags[i] == "Laptop"){
+    //   $('<input type="checkbox" name="item-category" class="item-category" checked>')
+    //   .attr('id', idTag)
+    //   .attr('value', tag)
+    //   .appendTo(checkDiv);
+    // }
+    // else {
     $('<input type="checkbox" name="item-category" class="item-category">')
     .attr('id', idTag)
     .attr('value', tag)
     .appendTo(checkDiv);
+    // }
     
     $('<label></label>')
     .attr('for', idTag)
@@ -45,6 +55,9 @@ function addFilter(){
     .appendTo(checkDiv);
   }
 
+  laptopCheck = document.getElementById("laptop");
+  laptopCheck.checked = true;
+  $(laptopCheck).trigger("change");
 
   $('<label style="width: 100%"><strong>Hãng sản xuất</strong></label>').appendTo(brandDiv);
 
@@ -202,6 +215,18 @@ $(document).ready( function () {
           // "searchable": false,
           "className": 'item-shopName item-column'
         },
+        {
+          "data": "rating", 
+          "visible": false,
+          // "searchable": false,
+          "className": 'item-rating item-column'
+        },
+        {
+          "data": "numOfRating", 
+          "visible": false,
+          // "searchable": false,
+          "className": 'item-numOfRating item-column'
+        },
       ],
       "columnDefs": [
         { "width": "20%", "targets": 1, "orderable": false},
@@ -211,7 +236,8 @@ $(document).ready( function () {
       ],
       "order": [[3, 'asc']]
     });
-
+    
+    addFilter();
     
     // search section
     $('[type=search]').each(function() {
@@ -229,24 +255,23 @@ $(document).ready( function () {
 
 
     
-    addFilter();
     
 // SELECT ALL IMPLEMENTATION
-    $('.item-category').click(function() {
-      if ($('.item-category:not(:checked)').length === 0) {
-        $('#all-item-category').prop('checked', true);
-      } else {
-        $('#all-item-category').prop('checked', false);
-      }
-    });
+    // $('.item-category').click(function() {
+    //   if ($('.item-category:not(:checked)').length === 0) {
+    //     $('#all-item-category').prop('checked', true);
+    //   } else {
+    //     $('#all-item-category').prop('checked', false);
+    //   }
+    // });
     
-    $('#all-item-category').click(function() {
-      if ($(this).prop('checked')) {
-        $('.item-category').prop('checked', true);
-      } else {
-        $('.item-category').prop('checked', false);
-      }
-    });
+    // $('#all-item-category').click(function() {
+    //   if ($(this).prop('checked')) {
+    //     $('.item-category').prop('checked', true);
+    //   } else {
+    //     $('.item-category').prop('checked', false);
+    //   }
+    // });
 
 
     $('.item-brand').click(function() {
@@ -311,8 +336,8 @@ $(document).ready( function () {
       }
     });
   });
-
   waitAndSelectElement().then(function(element) {
+
     $.fn.dataTable.ext.search.push(function (settings, data, dataIndex) { 
       var min = parseInt(element[0].val(), 10);
       var max = parseInt(element[1].val(), 10);
@@ -336,7 +361,9 @@ $(document).ready( function () {
           ) 
           &&
           (
-            checkEqual("all-item-category", checkedCategoryBoxes) ||checkEqual(tag, checkedCategoryBoxes)
+          //   checkEqual("all-item-category", checkedCategoryBoxes) ||checkEqual(tag, checkedCategoryBoxes)
+          // )
+            checkEqual(tag, checkedCategoryBoxes)
           )
           &&
           (
@@ -383,6 +410,8 @@ $(document).ready( function () {
       $('#datatable').DataTable().draw();
     })
 
+    $(laptopCheck).trigger("change");
+
   }).catch(function(error) {
     // Handle the error
     console.error(error);
@@ -391,9 +420,11 @@ $(document).ready( function () {
 });
 
 
+
 function waitAndSelectElement() {
   return new Promise(function(resolve, reject) {
     setTimeout(function() {
+      // checkLaptop();
       var minEl = $('#min');
       var maxEl = $('#max');
       var categoryEls = $('input[name="item-category"]');
@@ -417,6 +448,7 @@ function waitAndSelectElement() {
 
 function format(d){
 
+  let extraInfo = ''
   let oriPriceDiv = (d.oriPrice == "") ? "" : d.oriPrice + "  (-" + d.discount + "%)";
   systemDiv = "";
   if (!d.system || d.system == "") {
@@ -426,24 +458,44 @@ function format(d){
       (d.system).forEach(item => systemDiv = systemDiv + "<p>" + item + "</p>")
   }
   // `d` is the original data object for the row
-  return '<table class="extra-infor" cellpadding="5" cellspacing="0" border="0" style="padding-left:50px;">' +
+  extraInfo = extraInfo + '<table class="extra-infor" cellpadding="5" cellspacing="0" border="0" style="padding-left:50px;">' +
     '<tr>' +
     '<td>Tên trang web:</td>' +
     '<td>' + d.shopName1 + '</td>' +
-    '</tr>' +
-    '<tr>' +
-    '<td>Cấu hình:</td>' +
+    '</tr>';
+  if(d.system && d.system != ""){
+    extraInfo = extraInfo + '<tr>' +
+    '<td>Thông tin sản phẩm:</td>' +
     '<td>' + systemDiv + '</td>' +
-    '</tr>' +
-    '<tr>' +
+    '</tr>'
+  }
+  if(d.oriPrice != ""){
+    extraInfo = extraInfo + '<tr>' +
     '<td>Giá gốc:</td>' +
     '<td>' + oriPriceDiv + '</td>' +
-    '</tr>' +
-    '<tr>' +
+    '</tr>'
+  }
+  
+  if (d.rating && d.rating == -1){
+    extraInfo = extraInfo + '<tr>' +
+    '<td>Đánh giá:</td>' +
+    '<td>Không có đánh giá</td>' +
+    '</tr>'
+  }
+  else if(d.rating) {
+    extraInfo = extraInfo + '<tr>' +
+    '<td>Đánh giá:</td>' +
+    '<td>' + d.rating + '/5 (' + d.numOfRating + ' đánh giá)</td>' +
+    '</tr>'
+  }
+
+  extraInfo = extraInfo + '<tr>' +
     '<td>URL:</td>' +
-    '<td><a href="' + d.url + '">Link sản phẩm</a></td>' +
+    '<td><a class="link-san-pham" href="' + d.url + '">Link sản phẩm</a></td>' +
     '</tr>' + 
     '</table>';   
+  
+  return extraInfo
 }
 
 function checkEqual(tag, EleArr){

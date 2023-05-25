@@ -11,12 +11,11 @@ from concurrent.futures import ThreadPoolExecutor
 from concurrent.futures import as_completed
 import threading
 
-#Khai bao browser
-options = webdriver.ChromeOptions()
-options.add_experimental_option('excludeSwitches', ['enable-logging'])
-
 #Cao laptop
-def Crawl_Laptop():
+def Crawl_Laptop(res):
+    #Khai bao browser
+    options = webdriver.ChromeOptions()
+    options.add_experimental_option('excludeSwitches', ['enable-logging'])
     driver_service = Service(executable_path="chromedriver.exe")
     driver = webdriver.Chrome(service=driver_service)
     #Mo lien ket den trang
@@ -49,14 +48,14 @@ def Crawl_Laptop():
         elements = driver.find_elements(By.CSS_SELECTOR, ".listproduct .main-contain")
         urls = [url.get_attribute("href") for url in elements]
         names = [name.get_attribute("data-name") for name in elements]
-        curPrices = [curPrice.get_attribute("data-price") for curPrice in elements]
+        curPrices = [curPrice.find_element(By.CLASS_NAME, "price").text for curPrice in elements]
         brands = [brand.get_attribute("data-brand") for brand in elements]
 
         elements_sys = driver.find_elements(By.CSS_SELECTOR, ".utility")
-        systems = [system.text for system in elements_sys]
+        # systems = [system.text for system in elements_sys]
 
         l = len(urls)
-        
+        # l = 5
         #Lay thong tin ve discount
         discounts = []
         isSales = []
@@ -82,7 +81,7 @@ def Crawl_Laptop():
                 try:
                     oriPrice_element = driver.find_element("xpath","/html/body/div[6]/section/div[3]/ul/li[{}]/a[1]/div[5]/p".format(i))
                 except NoSuchElementException:
-                    oriPrices = oriPrices + ["0₫"]
+                    oriPrices = oriPrices + [""]
                     continue
             oriPrices = oriPrices + [oriPrice_element.text]
 
@@ -90,9 +89,18 @@ def Crawl_Laptop():
         imgs = []
         for i in range(1, l+1):
             try:
-                img_element = driver.find_element("xpath","/html/body/div[6]/section/div[3]/ul/li[{}]/a[1]/div[2]/img".format(i))
+                img_element = driver.find_element("xpath","/html/body/div[6]/section/div[3]/ul/li[%i]/a[1]/div[2]/img" % (i))
             except NoSuchElementException:
-                img_element = driver.find_element("xpath","/html/body/div[6]/section/div[3]/ul/li[{}]/a[1]/div[2]/img[1]".format(i))
+                try:
+                    img_element = driver.find_element("xpath","/html/body/div[6]/section/div[3]/ul/li[%i]/a[1]/div[2]/img[1]" % (i))
+                except:
+                    print("sos")
+                    print(button)
+                    print(i)
+                    pass
+                # /html/body/div[6]/section/div[3]/ul/li[1]/a[1]/div[2]/img
+                # /html/body/div[6]/section/div[3]/ul/li[2]/a[1]/div[2]/img[1]
+                # /html/body/div[6]/section/div[3]/ul/li[3]/a[1]/div[2]/img[1]
             img = img_element.get_attribute("src")
             if img is None:
                 img = img_element.get_attribute("data-src")
@@ -103,22 +111,26 @@ def Crawl_Laptop():
             discounts[i] = discounts[i][0 : len(discounts[i])-1]
         for i in range(0, len(oriPrices)):
             oriPrices[i] = oriPrices[i][0 : len(oriPrices[i])-1]
-        systems_list = []
-        for system in systems:
-            systems_list = systems_list + [system.split('\n')]
+        # systems_list = []
+        # for system in systems:
+        #     systems_list = systems_list + [system.split('\n')]
 
-        #Tao data de ghi vao json
         for i in range(0, l):
-            data.append({"tag": "laptop",
+            print(i)
+            print(urls[i])
+            print(curPrices[i])
+            print(curPrices[i][0 : len(curPrices[i]) - 1].replace(".",""))
+
+            res.append({"tag": "laptop",
                             "img": imgs[i],        
                             "url": urls[i],
                             "brand": brands[i],   
                             "name": names[i],
-                            "system": systems_list[i],
-                            "discount": discounts[i],
+                            "system": "",
+                            "discount": discounts[i].replace("-",""),
                             "oriPrice": oriPrices[i].replace(",", "."),
-                            "curPrice": curPrices[i].replace(",", "."),
-                            "curPrice1": int(curPrices[i].replace(",","")),
+                            "curPrice": curPrices[i],
+                            "curPrice1": int(curPrices[i][0 : len(curPrices[i]) - 1].replace(".","")),
                             "isSale": isSales[i],
                             "shopName": 'thegioididong',
                             "shopName1": 'Thế giới di động',
@@ -129,15 +141,19 @@ def Crawl_Laptop():
         driver.get("https://www.thegioididong.com/laptop-ldp")
         sleep(random.randint(1,3))
     
-    Savedata("laptop.json", data)
+    # saveRawTgdd("laptop.json", data)
     #Dong url
     driver.close()
+    return res
 
 #Cao phu kien
-def Crawl_Accessory(accessory_link, accessory_tag):
+def Crawl_Accessory(accessory_link, accessory_tag, res):
+    #Khai bao browser
+    options = webdriver.ChromeOptions()
+    options.add_experimental_option('excludeSwitches', ['enable-logging'])
     driver_service = Service(executable_path="chromedriver.exe")
     driver = webdriver.Chrome(service=driver_service)
-    data = []
+    # data = []
     #Truy cap link
     driver.get(accessory_link)
     sleep(random.randint(1,3))
@@ -155,20 +171,23 @@ def Crawl_Accessory(accessory_link, accessory_tag):
     elements = driver.find_elements(By.CSS_SELECTOR, ".listproduct .main-contain")
     urls = [url.get_attribute("href") for url in elements]
     names = [name.get_attribute("data-name") for name in elements]
-    curPrices = [curPrice.get_attribute("data-price") for curPrice in elements]
+    curPrices = [curPrice.find_element(By.CLASS_NAME, "price").text for curPrice in elements]
     brands = [brand.get_attribute("data-brand") for brand in elements]
 
     l = len(urls)
-        
+
     #Lay thong tin ve discount
     discounts = []
+    isSales = []
     for i in range(1, l+1):
         try:
             discount_element = driver.find_element("xpath","/html/body/div[6]/section/div[3]/ul/li[{}]/a[1]/div[3]/span".format(i))
         except NoSuchElementException:
-            discounts = discounts + ["0%"]
+            discounts = discounts + [""]
+            isSales = isSales + [0]
             continue
         discounts = discounts + [discount_element.text]
+        isSales = isSales + [1]
             
     #Lay gia goc
     oriPrices = []
@@ -176,7 +195,7 @@ def Crawl_Accessory(accessory_link, accessory_tag):
         try:
             oriPrice_element = driver.find_element("xpath","/html/body/div[6]/section/div[3]/ul/li[{}]/a[1]/div[3]/p".format(i))
         except NoSuchElementException:
-            oriPrices = oriPrices + ["0₫"]
+            oriPrices = oriPrices + [""]
             continue
         oriPrices = oriPrices + [oriPrice_element.text]
 
@@ -197,25 +216,26 @@ def Crawl_Accessory(accessory_link, accessory_tag):
 
     #Tao data de ghi vao json
     for i in range(0, l):
-        data.append({"tag": accessory_tag,
+        res.append({"tag": accessory_tag,
                     "img": imgs[i],        
                     "url": urls[i],
                     "brand": brands[i],   
                     "name": names[i],
                     "system": "",
-                    "discount": discounts[i],
-                    "oriPrice": oriPrices[i],
-                    "curPrice": curPrices[i]                          
+                    "discount": discounts[i].replace("-",""),
+                    "oriPrice": oriPrices[i].replace(",", "."),
+                    "curPrice": curPrices[i].replace(",", "."),
+                    "curPrice1": int(curPrices[i][0 : len(curPrices[i]) - 1].replace(".","")),
+                    "isSale": isSales[i],
+                    "shopName": 'thegioididong',
+                    "shopName1": 'Thế giới di động',               
                     })
     
-    Savedata(accessory_tag + ".json", data)
+    # saveRawTgdd(accessory_tag + ".json", data)
     #Dong driver
     driver.close()
-    
-#Ghi file json
-def Savedata(filename, data):
-    with open(filename, "w", encoding ='utf8') as f:
-        json.dump(data, f, ensure_ascii=False, indent=4)
+    return res
+
 
 accessory_links = [
     "https://www.thegioididong.com/chuot-may-tinh",
@@ -231,13 +251,28 @@ accessory_tags = [
 ]
 
 # Đa luồng
-threads = []
-for i in range(0, len(accessory_links)):
-    threads.append(threading.Thread(target=Crawl_Accessory, args = (accessory_links[i], accessory_tags[i])))
+def runProgramTgdd(accessory_links, accessory_tags):
+    threads = []
+    res1 = []
+    res = Crawl_Laptop(res1)
+    for i in range(0, len(accessory_links)):
+        threads.append(threading.Thread(target=Crawl_Accessory, args = (accessory_links[i], accessory_tags[i], res)))
 
-for t in threads:
-    t.start()
+    for t in threads:
+        t.start()
 
-# Đợi cho tất cả các thread kết thúc
-for t in threads:
-    t.join()
+    # Đợi cho tất cả các thread kết thúc
+    for t in threads:
+        t.join()
+    
+    return res
+
+#Ghi file json
+def saveRawTgdd(filename, data):
+    with open(filename, "w", encoding ='utf8') as f:
+        json.dump(data, f, ensure_ascii=False, indent=4)
+
+# saveRawTgdd("./static/json/test-crawl-tgdd-data.json", runProgramTgdd(accessory_links, accessory_tags)
+
+# test laptop
+#test at home

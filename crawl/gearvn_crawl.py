@@ -10,13 +10,6 @@ import time
 from selenium.webdriver.common.action_chains import ActionChains
 import threading
 
-options = webdriver.ChromeOptions()
-
-options.add_experimental_option('excludeSwitches', ['enable-logging'])
-driver = webdriver.Chrome()
-
-driver.get('https://gearvn.com/')
-html = driver.page_source
 
 # Trích xuất thông tin sản phẩm và lưu vào một danh sách
 
@@ -46,15 +39,20 @@ def crawl1(tag, sidebar_dropdown_index,dropdown_container_index, driver,products
                 try:
                     name = row.find_element(By.CSS_SELECTOR, '.product-row-name').text
                     url = row.find_element(By.CSS_SELECTOR, 'a').get_attribute('href')
- 
-                    price = row.find_element(By.CSS_SELECTOR, '.product-row-price .product-row-sale').text.replace("₫","").replace(",",".")
+                    curprice = row.find_element(By.CSS_SELECTOR, '.product-row-price .product-row-sale').text
+                    curprice1 = curprice.replace("₫","").replace(",","")
                     oriprice = row.find_element(By.CSS_SELECTOR, '.product-row-price > del').text.replace("₫","").replace(",",".")
-                    discount = row.find_element(By.CSS_SELECTOR, '.new-product-percent').text.replace("%","").replace("-","")
+                    isSale = 0
+                    discount = row.find_element(By.CSS_SELECTOR, '.new-product-percent')
+                    if discount:
+                        discount = discount.text.replace("%","").replace("-","")
+                        isSale = 1  
                     img = row.find_element(By.CSS_SELECTOR, '.product-row-thumbnail').get_attribute('src')
                     
                 except NoSuchElementException:
                     continue
-                products.append({'tag': tag,'brand':brand,'name': name, 'url': url,'oriPrice': oriprice, 'curPrice': price, 'discount': discount, 'img': img})
+                products.append({'tag': tag,'brand':brand,'name': name, 'url': url,'oriPrice': oriprice, 'curPrice': curprice, 'curPrice1' : int(curprice1), 'discount': discount, 'img': img
+                                 , 'isSale': isSale, 'shopName' : "gearvn", 'shopName1': "GearVn"})
                 
             pages_scraped += 1
             try:
@@ -83,14 +81,22 @@ def crawlMacbook(tag, sidebar_dropdown_index,dropdown_container_index, driver,pr
             for row in product_rows:
                 try:
                     name = row.find_element(By.CSS_SELECTOR, '.product-row-name').text
-                    link = row.find_element(By.CSS_SELECTOR, 'a').get_attribute('href')
-                    price = row.find_element(By.CSS_SELECTOR, '.product-row-price .product-row-sale').text.replace("₫","").replace(",",".")
+                    url = row.find_element(By.CSS_SELECTOR, 'a').get_attribute('href')
+                    curprice = row.find_element(By.CSS_SELECTOR, '.product-row-price .product-row-sale').text
+                    curprice1 = curprice.replace("₫","").replace(",","")
                     oriprice = row.find_element(By.CSS_SELECTOR, '.product-row-price > del').text.replace("₫","").replace(",",".")
-                    discount = row.find_element(By.CSS_SELECTOR, '.new-product-percent').text.replace("%","").replace("-","")
+                    isSale = 0
+                    discount = row.find_element(By.CSS_SELECTOR, '.new-product-percent')
+                    if discount:
+                        discount = discount.text.replace("%","").replace("-","")
+                        isSale = 1  
                     img = row.find_element(By.CSS_SELECTOR, '.product-row-thumbnail').get_attribute('src')
+                    
                 except NoSuchElementException:
                     continue
-                products.append({'tag': tag,'brand':brand,'name': name, 'url': link,'oriPrice': oriprice, 'curPrice': price, 'discount': discount, 'img': img})
+                products.append({'tag': tag,'brand':brand,'name': name, 'url': url,'oriPrice': oriprice, 'curPrice': curprice, 'curPrice1' : int(curprice1), 'discount': discount, 'img': img
+                                 , 'isSale': isSale, 'shopName' : "gearvn", 'shopName1': "GearVn"})
+                
             pages_scraped += 1
             try:
                 next_page_link_selector = '.pagination li:nth-child(3) a'
@@ -119,14 +125,22 @@ def crawl2(tag, sidebar_dropdown_index,dropdown_container_index, driver,products
                 try:
                     name = row.find_element(By.CSS_SELECTOR, '.product-row-name').text
                     brand = name.split()[1]
-                    link = row.find_element(By.CSS_SELECTOR, 'a').get_attribute('href')
-                    price = row.find_element(By.CSS_SELECTOR, '.product-row-price .product-row-sale').text.replace("₫","").replace(",",".")
+                    url = row.find_element(By.CSS_SELECTOR, 'a').get_attribute('href')
+                    curprice = row.find_element(By.CSS_SELECTOR, '.product-row-price .product-row-sale').text.replace(",",".")
+                    curprice1 = curprice.replace("₫","").replace(".","")
                     oriprice = row.find_element(By.CSS_SELECTOR, '.product-row-price > del').text.replace("₫","").replace(",",".")
-                    discount = row.find_element(By.CSS_SELECTOR, '.new-product-percent').text.replace("%","").replace("-","")
+                    isSale = 0
+                    discount = row.find_element(By.CSS_SELECTOR, '.new-product-percent')
+                    if discount:
+                        discount = discount.text.replace("%","").replace("-","")
+                        isSale = 1  
                     img = row.find_element(By.CSS_SELECTOR, '.product-row-thumbnail').get_attribute('src')
+                    
                 except NoSuchElementException:
                     continue
-                products.append({'tag': tag,'img': img,'url': link,'brand':brand,'name': name ,'discount': discount,'oriPrice': oriprice, 'curPrice': price })
+                products.append({'tag': tag,'brand':brand,'name': name, 'url': url,'oriPrice': oriprice, 'curPrice': curprice, 'curPrice1' : int(curprice1), 'discount': discount, 'img': img
+                                 , 'isSale': isSale, 'shopName' : "gearvn", 'shopName1': "GearVn"})
+                
             pages_scraped += 1
             try:
                 next_page_link_selector = '.pagination li:nth-child(3) a'
@@ -134,26 +148,16 @@ def crawl2(tag, sidebar_dropdown_index,dropdown_container_index, driver,products
                 driver.get(next_page_link)
             except:
                 break
-
-def crawl_detail(products,url,urls):
-    driver = webdriver.Chrome()
-    driver.get(url)
-    try:    
-        table = driver.find_element(By.CLASS_NAME, 'table')
-        rows = table.find_elements(By.TAG_NAME, 'tr')
-        product_info = []
-        for rowss in rows:
-            cells = rowss.find_elements(By.TAG_NAME, 'td')
-            if len(cells) == 2:
-                key = cells[0].text.strip()
-                value = cells[1].text.strip()
-                product_info.append(key + ": " + value)  
-    except NoSuchElementException:
-        product_info = []
-    products[urls.index(url)].update({"system": product_info }) 
-    driver.close() 
         
-def run_program(driver):
+def run_program():
+    options = webdriver.ChromeOptions()
+
+    options.add_experimental_option('excludeSwitches', ['enable-logging'])
+    driver = webdriver.Chrome()
+
+    driver.get('https://gearvn.com/')
+    html = driver.page_source
+
     products = []
     crawl1("laptop",0,0,driver,products)  
     crawl1("laptop",1,0,driver,products)
@@ -166,24 +170,15 @@ def run_program(driver):
     crawl1("headphone",11,1,driver,products)
     crawl2("ram",6,4,driver,products)
     crawl2("harddisk",6,5,driver,products)
-    
-    # đa luồng cào system
-    urls = [item['url'] for item in products]
-    for i in range(0, len(urls), 5):
-        threads_detail = []
-        for url in urls[i:i+5]:
-            thread = threading.Thread(target=crawl_detail, args=(products,url,urls))
-            threads_detail.append(thread)
-            thread.start()  
-        for thread in threads_detail:
-            thread.join()
+    driver.quit()
+
     return products
 
-def saveData(link, data):
+def saveRawGearvn(link, data):
     with open(link, 'w', encoding='utf-8') as f:
         json.dump(data, f, ensure_ascii=False, indent=4)
 
-saveData("GearVn.json",run_program(driver))
+# saveRawGearvn("./static/json/gearvn-data.json",run_program())
 
 # Đóng trình duyệt
-driver.quit()
+
